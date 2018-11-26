@@ -14,30 +14,37 @@ var vm = new Vue({
     selected: '',
     picked: '',
     orders: {},
-  },
-   created: function () {
-    socket.on('initialize', function (data) {
-      this.orders = data.orders;
-    }.bind(this));
+    details: {x: 0,
+              y: 0},
+    lastOrder: 0,
 
-    socket.on('currentQueue', function (data) {
-      this.orders = data.orders;
-    }.bind(this));
   },
+  //  created: function () {
+  //   socket.on('initialize', function (data) {
+  //     this.orders = data.orders;
+  //   }.bind(this));
+  //
+  //   socket.on('currentQueue', function (data) {
+  //     this.orders = data.orders;
+  //   }.bind(this));
+  // },
   methods: {
     displayOrder: function (event) {
 
      var offset = {x: event.currentTarget.getBoundingClientRect().left,
                     y: event.currentTarget.getBoundingClientRect().top};
 
+       //
+       // socket.emit("addOrder", { orderId: "T",
+       //                           details: { x: event.clientX - 10 - offset.x,
+       //                                     y: event.clientY - 10 - offset.y }
+       //
+       //                        });
 
-       socket.emit("addOrder", { orderId: "T",
-                                 details: { x: event.clientX - 10 - offset.x,
-                                           y: event.clientY - 10 - offset.y }
+      this.details = {x: event.clientX - 10 - offset.x,
+                      y: event.clientY - 10 - offset.y };
 
-                              });
-this.details = { x: event.clientX - 10 - offset.x,
-                 y: event.clientY - 10 - offset.y };
+
 
 
     },
@@ -47,10 +54,12 @@ this.details = { x: event.clientX - 10 - offset.x,
     },
 
     getNext: function () {
-      var lastOrder = Object.keys(this.orders).reduce(function (last, next) {
-        return Math.max(last, next);
-      }, 0);
-      return lastOrder + 1;
+      this.lastOrder = this.lastOrder +1;
+      return this.lastOrder;
+      // var lastOrder = Object.keys(this.orders).reduce(function (last, next) {
+      //   return Math.max(last, next);
+      // }, 0);
+      // return lastOrder + 1;
     },
     addOrder: function (event) {
       console.log("Hej woppp");
@@ -60,12 +69,15 @@ this.details = { x: event.clientX - 10 - offset.x,
 
       /* var offset = {x: event.currentTarget.getBoundingClientRect().left,
                     y: event.currentTarget.getBoundingClientRect().top}; */
-      socket.emit("addOrder", { orderId: "T",
-                                details: { x: this.orders.x,
-                                           y: this.orders.y },
-                                orderItems: this.checkedValue
+      socket.emit("addOrder", { orderId: this.getNext(),
+                                details: { x: this.details.x,
+                                           y: this.details.y },
+                                orderItems: this.checkedValue,
+                                personal: { info: this.formDetails,
+                                            gender: this.picked,
+                                            pay: this.selected}
                               });
-                              console.log(this.details.x);
+                              //console.log(this.lastOrder);
     }
   }
 });

@@ -1,12 +1,198 @@
 <!DOCTYPE html>
+<html lang="en">
+<header>
+  <script src="https://vuejs.org/js/vue.js" defer></script>
+
+    <head>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+ <script type="text/javascript" src="js/menu.js" defer></script>
+ <script src="/vue/vue.js" defer></script>
+ <script src="/socket.io/socket.io.js" defer></script>
+<script src="js/js_script.js" defer></script>
+<script src="js/vue_script.js" defer></script>
+
+        <title>Get a burger!</title>
+        <meta charset="utf-8"/>
+    </head>
+	</header>
+		<body>
+			<main>
+
+<section id="header">
+          <img id="headerpic" src="https://images.pexels.com/photos/1308624/pexels-photo-1308624.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940">
+		    <h1 id="headline" align ="center">Holmburger's burgers</h1>
+
+</section>
+
+<div id ="mapItems">
+<section id="burgerselection">
+	<h2 align ="center">Which burger would you like?</h2>
+	<div align ="center"> A little tip: pick the burger you think you'll like the most. </div>
+</br>
+<!-- <div id ="burgerList"> -->
+
+<div class="wrapper">
+
+   <div class="box a">
+     <div v-for = "burger in menu" v-if="burger.gluten && !burger.lactose" >
+       <h4>{{burger.name}}</h4>
+       <img v-bind:src="burger.img" alt="Span" title="Crispy Burga" width="300">
+       </br></br>
+     <li>Extra infused with that lovely <span class="gluten">gluten</span>!</li>
+     <li>{{burger.kCal}} calories</li>
+
+   <li><span class="beef">Beef</span> from cows</li>
+     <li>Apple smoked bacon</li>
+     <br>
+     <input type="checkbox" v-bind:value="burger.name" v-model="checkedValue">
+       <label for="burger_a">{{burger.name}}</label>
+       </div>
+   </div>
+
+   <div class="box b">
+     <div v-for = "burger in menu" v-if="burger.gluten && burger.lactose" >
+       <h4>{{burger.name}}</h4>
+       <img v-bind:src="burger.img" alt="Span" title="Crispy Burga" width="300">
+     </br></br>
+     <li><span class="lactose">Lactose</span> AND <span class="gluten">gluten</span>-full!</li>
+     <li>{{burger.kCal}} calories</li>
+     <li><span class="beef">Beef</span>-free Halloumi</li>
+       <li>A jalapeño surprise...</li>
+       <br>
+     <input type="checkbox" v-bind:value="burger.name" v-model="checkedValue">
+       <label for="burger_b">{{burger.name}}</label>
+     </div>
+   </div>
+
+     <div class="box c">
+       <div v-for = "burger in menu" v-if="burger.lactose && !burger.gluten" >
+         <h4>{{burger.name}}</h4>
+         <img v-bind:src="burger.img" alt="Span" title="Crispy Burga" width="300">
+         </br></br>
+       <li>Contains <span class="lactose">lactose</span></li>
+       <li>{{burger.kCal}} calories</li>
+
+       <li>Spicy pesto</li>
+       <li>No <span class="gluten">gluten</span>!</li>
+       <br>
+       <input type="checkbox" v-bind:value="burger.name" v-model="checkedValue">
+         <label for="burger_c">{{burger.name}}</label>
+         </div>
+     </div>
+<br><br>
+     <h3 id="chosenburger">Chosen items: {{checkedValue}}</h3>
+
+  </div>
+
+
+
+</section>
+
+
+<section id="contactinfo">
+	<h2 align ="center">Personal details</h2>
+	<div align ="center">We need some information to deliver your burger.</div>
+<form align="center">
+  <!-- <div id ="contactDetails"> -->
+	<p>
+	    <label for="fullname">Full name</label><br>
+	    <input type="text" v-model="formDetails[0]" id="fullname" name="fn" required="required" placeholder="Full name">
+	</p>
+	<!--<p>
+	    <label for="Street name">Street name</label><br>
+	    <input type="text" v-model="formDetails[1]" id="streetname" name="sn" placeholder="Street name">
+	</p>
+	<p>
+	    <label for="House number">House number</label><br>
+	    <input type="text" v-model="formDetails[2]" id="housenumber" name="hn" placeholder="House number">
+	</p>
+	<p>-->
+		<label for="Email address">Email address</label><br>
+	    <input type="email" v-model="formDetails[1]" id="email" name="em" required="required" placeholder="E-mail address">
+	</p>
+
+
+</form>
+</br>
+<h3 align="center">Payment method</h3>
+<p align="center">
+    <label for="recipient">Choose your preferred payment method:</label><br>
+	</br>
+    <select v-model="selected" id="recipient" name="rcp">
+      <option disabled value="">Please select method:</option>
+        <option>Credit card</option>
+        <option>Swish</option>
+        <option>Invoice</option>
+    </select>
+</p>
+
+</br>
+<form align="center">
+        <legend>Select gender</legend>
+
+        <div>
+            <input type="radio" id="Woman"
+                   name="gender" value="Woman" v-model="picked" />
+            <label for="Woman">Woman</label>
+        </div>
+
+        <div>
+            <input type="radio" id="Man"
+                   name="gender" value="Man" v-model="picked" />
+            <label for="Man">Man</label>
+        </div>
+
+        <div>
+            <input type="radio" id="Undisclosed"
+                   name="gender" value="Undisclosed" checked v-model="picked" />
+            <label for="Undisclosed">Undisclosed</label>
+        </div>
+</form>
+
+<h3>Details: {{formDetails[0]}} {{formDetails[1]}}</h3>
+</br>
+<h3>Payment method: {{selected}}</h3>
+<h3>Gender: {{picked}}</h3>
+<!-- </div> -->
+
 <html>
 <head>
-	<title>DELI-VERY</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DELI-VERY MAP</title>
+  <link rel="stylesheet" href="css/deli-very.css">
+  <!-- <script src="/vue/vue.js" defer></script> -->
+  <!-- <script src="/socket.io/socket.io.js" defer></script> -->
+  <!-- <script src="js/deli-very.js" defer></script> -->
 </head>
 <body>
-	<h1>
-		Hello world!
-	</h1>
-	<a href="/map">View map</a>
+  <h1> Click in the map! </h1>
+  <a href="/dispatcher" target="_blank">Open dispatcher in new window</a>.
+  <div class="view-box">
+    <div id="dots" v-on:click="displayOrder">
+        <div
+          v-bind:style="{ left: this.details.x + 'px', top: this.details.y + 'px'}">
+          T
+        </div>
+    </div>
+  </div>
 </body>
+</html>
+
+
+<div align="center">
+<button v-on:click="addOrder" type="submit"><img src="https://banner2.kisspng.com/20180326/hye/kisspng-check-mark-checkbox-check-5ab8fe73de9462.9826201115220732039117.jpg" width="30"> Place order</button>
+  </div>
+<!-- <h3>{{orders}}</h3> -->
+
+</div>
+
+
+</section>
+
+
+</main>
+		</body>
+
+		<footer>Holmburger's Burgers</footer>
 </html>
